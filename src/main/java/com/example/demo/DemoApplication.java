@@ -17,7 +17,18 @@ public class DemoApplication {
 
     @Bean
     public CommandLineRunner commandLineRunner(AppDAOImpl appDAO) {
-        return runner -> findInstructor(appDAO);
+        return runner -> findInstructorDetail(appDAO);
+    }
+
+    private void findInstructorDetail(AppDAOImpl appDAO) {
+        int theId = 2;
+        System.out.println("Finding instructorDetail id: " + theId);
+
+        InstructorDetail tempInstructorDetail = appDAO.findInstructorDetailById(theId);
+
+        System.out.println("tempInstructorDetail: " + tempInstructorDetail);
+        System.out.println("the associated instructorDetail only: " + tempInstructorDetail.getInstructor());
+        System.out.println("Done");
     }
 
     private void deleteInstructor(AppDAOImpl appDAO) {
