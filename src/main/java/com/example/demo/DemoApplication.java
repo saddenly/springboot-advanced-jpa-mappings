@@ -21,7 +21,7 @@ public class DemoApplication {
     }
 
     private void deleteInstructorDetail(AppDAOImpl appDAO) {
-        int theId = 2;
+        int theId = 3;
         System.out.println("Deleting instructorDetail id: " + theId);
 
         appDAO.deleteInstructionDetailById(theId);
