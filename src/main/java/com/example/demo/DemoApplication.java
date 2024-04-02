@@ -17,7 +17,16 @@ public class DemoApplication {
 
     @Bean
     public CommandLineRunner commandLineRunner(AppDAOImpl appDAO) {
-        return runner -> findInstructorDetail(appDAO);
+        return runner -> deleteInstructorDetail(appDAO);
+    }
+
+    private void deleteInstructorDetail(AppDAOImpl appDAO) {
+        int theId = 2;
+        System.out.println("Deleting instructorDetail id: " + theId);
+
+        appDAO.deleteInstructionDetailById(theId);
+
+        System.out.println("Done");
     }
 
     private void findInstructorDetail(AppDAOImpl appDAO) {
