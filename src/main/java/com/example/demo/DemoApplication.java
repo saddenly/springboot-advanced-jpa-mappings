@@ -17,7 +17,7 @@ public class DemoApplication {
 
     @Bean
     public CommandLineRunner commandLineRunner(AppDAOImpl appDAO) {
-        return runner -> deleteInstructor(appDAO);
+        return runner -> findInstructor(appDAO);
     }
 
     private void deleteInstructor(AppDAOImpl appDAO) {
@@ -30,7 +30,7 @@ public class DemoApplication {
     }
 
     private void findInstructor(AppDAOImpl appDAO) {
-        int theId = 1;
+        int theId = 2;
         System.out.println("Finding instructor id: " + theId);
 
         Instructor tempInstructor = appDAO.findInstructorById(theId);
