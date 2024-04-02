@@ -6,11 +6,11 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AppDAOImpl implements AppDAO{
+public class AppDAOImpl implements AppDAO {
 
     private EntityManager entityManager;
 
-    public AppDAOImpl(EntityManager entityManager){
+    public AppDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -18,5 +18,10 @@ public class AppDAOImpl implements AppDAO{
     @Transactional
     public void save(Instructor theInstructor) {
         entityManager.persist(theInstructor);
+    }
+
+    @Override
+    public Instructor findInstructorById(int theId) {
+        return entityManager.find(Instructor.class, theId);
     }
 }

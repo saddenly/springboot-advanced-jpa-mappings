@@ -19,6 +19,10 @@ public class InstructorDetail {
         this.hobby = hobby;
     }
 
+    public InstructorDetail() {
+
+    }
+
     public int getId() {
         return id;
     }

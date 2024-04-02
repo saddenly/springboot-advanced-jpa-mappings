@@ -29,6 +29,10 @@ public class Instructor {
         this.email = email;
     }
 
+    public Instructor() {
+
+    }
+
     public int getId() {
         return id;
     }
