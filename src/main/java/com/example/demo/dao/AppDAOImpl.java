@@ -1,10 +1,14 @@
 package com.example.demo.dao;
 
+import com.example.demo.entity.Course;
 import com.example.demo.entity.Instructor;
 import com.example.demo.entity.InstructorDetail;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class AppDAOImpl implements AppDAO {
@@ -30,6 +34,13 @@ public class AppDAOImpl implements AppDAO {
     @Transactional
     public void deleteInstructorById(int theId) {
         Instructor tempInstructor = entityManager.find(Instructor.class, theId);
+
+        List<Course> courses = tempInstructor.getCourses();
+
+        for (Course course : courses) {
+            course.setInstructor(null);
+        }
+
         entityManager.remove(tempInstructor);
     }
 
@@ -46,5 +57,67 @@ public class AppDAOImpl implements AppDAO {
         tempInstructorDetail.getInstructor().setInstructorDetail(null);
 
         entityManager.remove(tempInstructorDetail);
+    }
+
+    @Override
+    public List<Course> findCoursesByInstructorId(int theId) {
+        TypedQuery<Course> query = entityManager.createQuery(
+                "from Course where instructor.id = :data", Course.class);
+        query.setParameter("data", theId);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public Instructor findInstructorByIdJoinFetch(int theId) {
+        TypedQuery<Instructor> query = entityManager.createQuery(
+                "select i from Instructor i "
+                        + "join fetch i.courses "
+                        + "join fetch i.instructorDetail "
+                        + "where i.id = :data", Instructor.class);
+        query.setParameter("data", theId);
+        return query.getSingleResult();
+    }
+
+    @Override
+    @Transactional
+    public void update(Instructor tempInstructor) {
+        entityManager.merge(tempInstructor);
+    }
+
+    @Override
+    @Transactional
+    public void update(Course course) {
+        entityManager.merge(course);
+    }
+
+    @Override
+    public Course findCourseById(int theId) {
+        return entityManager.find(Course.class, theId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCourseById(int theId) {
+        Course course = entityManager.find(Course.class, theId);
+        entityManager.remove(course);
+    }
+
+    @Override
+    @Transactional
+    public void save(Course course) {
+        entityManager.persist(course);
+    }
+
+    @Override
+    public Course findCourseAndReviewsById(int theId) {
+        TypedQuery<Course> query = entityManager.createQuery(
+                "select c from Course c "
+                        + "join fetch c.reviews "
+                        + "where c.id = :data", Course.class
+        );
+        query.setParameter("data", theId);
+
+        return query.getSingleResult();
     }
 }
