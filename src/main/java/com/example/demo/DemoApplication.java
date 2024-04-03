@@ -1,10 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.dao.AppDAOImpl;
-import com.example.demo.entity.Course;
-import com.example.demo.entity.Instructor;
-import com.example.demo.entity.InstructorDetail;
-import com.example.demo.entity.Review;
+import com.example.demo.entity.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +18,71 @@ public class DemoApplication {
 
     @Bean
     public CommandLineRunner commandLineRunner(AppDAOImpl appDAO) {
-        return runner -> deleteCourseAndReviews(appDAO);
+        return runner -> deleteStudent(appDAO);
+    }
+
+    private void deleteStudent(AppDAOImpl appDAO) {
+        int id = 1;
+        System.out.println("Deleting student id: " + id);
+
+        appDAO.deleteStudentById(1);
+
+        System.out.println("Done");
+    }
+
+    private void addMoreCoursesForStudent(AppDAOImpl appDAO) {
+        int id = 2;
+        Student student = appDAO.findStudentAndCoursesById(id);
+
+        Course course = new Course("Rubick's Cube - How to Speed Cube");
+        Course course1 = new Course("Atari 2600 - Game Development");
+
+        student.addCourse(course);
+        student.addCourse(course1);
+
+        System.out.println("Saving student: " + student);
+        System.out.println("associated courses: " + student.getCourses());
+
+        appDAO.update(student);
+
+        System.out.println("Done");
+    }
+
+    private void findStudentAndCourses(AppDAOImpl appDAO) {
+        int id = 1;
+        Student student = appDAO.findStudentAndCoursesById(id);
+
+        System.out.println("Loaded student: " + student);
+        System.out.println("Courses: " + student.getCourses());
+
+        System.out.println("Done");
+    }
+
+    private void findCourseAndStudents(AppDAOImpl appDAO) {
+        int id = 5;
+        Course course = appDAO.findCourseAndStudentsById(id);
+
+        System.out.println("Loaded course: " + course);
+        System.out.println("Students: " + course.getStudents());
+
+        System.out.println("Done");
+    }
+
+    private void createCourseAndStudents(AppDAOImpl appDAO) {
+        Course course = new Course("Pacman - how to score a million points");
+
+        Student student1 = new Student("Rustem", "Andassov", "rustem@gmail.com");
+        Student student2 = new Student("Angsar", "Utebayev", "angsar@gmail.com");
+
+        course.addStudent(student1);
+        course.addStudent(student2);
+
+        System.out.println("Saving the course:" + course);
+        System.out.println("associated students:" + course.getStudents());
+
+        appDAO.save(course);
+
+        System.out.println("Done");
     }
 
     private void deleteCourseAndReviews(AppDAOImpl appDAO) {
@@ -57,7 +118,7 @@ public class DemoApplication {
     }
 
     private void deleteCourse(AppDAOImpl appDAO) {
-        int theId = 1;
+        int theId = 2;
         System.out.println("Deleting course id: " + theId);
         appDAO.deleteCourseById(theId);
         System.out.println("Done");
